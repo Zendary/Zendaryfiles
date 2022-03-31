@@ -1,0 +1,136 @@
+@startuml
+!pragma layout smetana
+'https://plantuml.com/class-diagram
+
+Object TournamentController
+TournamentController --> Main
+
+'RELATIONSHIP BETWEEN CLASSES'
+Main *-- Tournament : "has a"
+Tournament *-- TextUI : "has a"
+Tournament *--  TournamentPlan : "has a"
+Tournament *--  Rounds : "has a"
+Tournament *-- FileIO : "has a"
+Tournament *-- RankList : "has a"
+Registration *-- Team : "has a"
+Team *--  Player : "has a"
+Score <|- Rounds
+Rounds <|-- AQuarterFinal
+Rounds <|-- ASemiFinal
+Rounds <|-- AFinal
+TextUI <--> Registration
+TextUI <-- Team
+TextUI <-- Player
+TournamentPlan o-- Registration
+AQuarterFinal o--  WinnersAndLosers
+ASemiFinal o--  WinnersAndLosers
+AFinal o-- WinnersAndLosers
+RankList <-- WinnersAndLosers
+
+'FIELDS AND METHODS'
+Class Main {
++ static main(String[] args)
+'method to run program'
++ void tournamentProgram()
+}
+
+Class Tournament {
+- FileIO fileIO
+- TextUI textUI
++ void tournamentProgram()
+- void startTournament()
+- void saveTournament()
+- void endTournament()
+}
+
+Class TextUI {
+'get names of players and teams as input'
++ String getInput()
+'display input'
++ void displayInput()
+}
+
+Class TournamentPlan {
++ void tournamentPlan(String tournamentDescription)
++ void displayTournamentPlan()
+}
+
+Class Registration {
++ void registerTeam()
++ void registerTournament()
+}
+
+Class Team {
+- String teamName
++ ArrayList<Player> teams
++ void getTeamName()
+}
+
+Class Player {
+- String playerName
+- ArrayList<String> players
++ void getPlayerName()
++ void addPlayer()
+}
+
+Interface Score {
+'declare methods'
++ int getCurrentScore()
++ int getFinalScore()
++ int updateTeamScore()
+'to registrate if team should move on'
++ void teamWins()
++ void teamLoses()
+}
+
+Abstract Class Rounds {
+# boolean hasWon
+'instantiate methods'
+<<constructor>> Rounds()
++ void planRandomRound()
++ int getCurrentScore()
++ int getFinalScore()
++ int updateTeamScore()
++ void ifTeamWins(boolean hasWon)
++ void ifTeamLoses(boolean hasWon)
++ void diffScore()
+}
+
+Abstract Class AQuarterFinal {
++ <<constructor>> Rounds
+'Override'
++ String toString()
+}
+
+Abstract Class ASemiFinal {
++ <<constructor>> Rounds
+'Override'
++ String toString()
+}
+
+Abstract Class AFinal {
++ <<constructor>> Rounds
+'Override'
++ String toString()
+}
+
+Class WinnersAndLosers {
++ void saveLoserData()
++ void saveWinnerData()
++ void displayWinners()
++ void displayLosers()
+}
+
+Class FileIO {
++ ArrayList<Team> data
++ File file = new File : data.txt
++ Scanner scanner = new scanner : System.in
++ ArrayList<Team> readFileData()
++ void saveFileData()
+}
+
+Class RankList {
++ void displayData()
+}
+
+@enduml
